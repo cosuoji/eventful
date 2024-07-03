@@ -99,7 +99,7 @@ export const forgotPassword = async(email) =>{
     try{
         const user = await User.findOne({email: email});
         if(!user){
-            return res.status(404).send({message: "User not found"})
+            throw new ErrorWithStatus("user not found, 404")
         }
 
     let token = await Token.findOne({ userId: user._id });
@@ -110,7 +110,7 @@ export const forgotPassword = async(email) =>{
             }).save();
         }
 
-    const link = `${process.env.BASE_URL}/password-reset/${user._id}/${token.token}`;
+    const link = `${process.env.BASE_URL}/forgot/${user._id}/${token.token}`;
     await sendEmail(user.email, "Password reset", link);
 
     return {
@@ -123,47 +123,40 @@ export const forgotPassword = async(email) =>{
     }
 }
 
-export const resetPassword = async(userId, newPassword, token) =>{
+export const resetPassword = async(userId, newPassword, newToken) =>{
     try{
-    // Verify the token sent by the user
-    // const decodedToken = jwt.verify(
-    //     senToken,
-    //     process.env.JWT_SECRET_KEY
-    // );
-
-    // // If the token is invalid, return an error
-    // if (!decodedToken) {
-    //    return res.status(401).send({ message: "Invalid token" });
-    // }
-
-
 
      // find the user with the id from the token
-    const user = await User.findById({userId});
-    if (!user) {
-       return res.status(401).send({ message: "no user found, invalid or expired link" });
-    }
+    const user = await User.findById({_id: userId});
 
+    if (!user) {
+       throw new ErrorWithStatus("user not found",404)
+    }
+   
     const token = await Token.findOne({
             userId: user._id,
-            token: token,
+            token: newToken,
      });
-    if (!token) return res.status(400).send("Invalid link or expired");
+    if (!token) {
+        throw new ErrorWithStatus("Invalid Token", 500)
+    }
 
+    console.log(newPassword)
 
     // Hash the new password
-    const salt = await bycrypt.genSalt(10);
-    newPassword = await bycrypt.hash(newPassword, salt);
+    const salt = await bcrypt.genSalt(10);
+    newPassword  = await bcrypt.hash(newPassword, 10);
+
 
     // Update user's password, clear reset token and expiration time
     user.password = newPassword;
     await user.save();
 
     // Send success response
-    res.status(200).send({ message: "Password updated" });
+    return{ message: "Password updated" }
 
 }catch(err){
        // Send error response if any error occurs
-    res.status(500).send({ message: err.message }); 
+    throw new ErrorWithStatus(err.message, 500)
 }
 }

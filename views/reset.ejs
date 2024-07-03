@@ -12,12 +12,12 @@
         <h2>Forgot Password</h2>
 
         <!-- FORMULAIRE -->
-        <form class="form" action="/forgot" method="POST">
+        <form class="form">
             <p>Please enter new password</p>
-            <input type="password" placeholder="password" class="pass" name="newPassword" required>
+            <input type="password" placeholder="password" id="password" class="pass" name="password" required>
             <!-- MOT DE PASSE OUBLIE ? -->
             <!-- BOUTTON LOGIN -->
-            <button type="submit" class="login_btn">Reset Password</button>
+            <button type="submit" class="login_btn" id="reset">Reset Password</button>
         </form>
     </div>
 </body>
@@ -133,5 +133,37 @@
         box-shadow: 1px 5px 9px rgba(211, 211, 211, .9);
     }
 </style>
+
+<script>
+    window.onload = function () {
+        const currentUrl = window.location.href.split("/");
+       // console.log(currentUrl)
+        let paramsArray = [currentUrl[4], currentUrl[5]]
+        let [userId, token] = paramsArray;
+        //console.log(userId, token)
+     let newPassword = document.getElementById("password")
+     let resetButton = document.getElementById("reset");
+
+     resetButton.addEventListener("click", event =>{
+        event.preventDefault();
+
+        const data = new URLSearchParams();
+         data.append('userId', userId);
+         data.append('token', token);
+         data.append("password", newPassword.value)
+         console.log(newPassword.value)
+       
+
+        fetch(`/forgot/${userId}/${token}`, {
+            method: "POST", 
+            body: data
+        })
+        .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+     })
+
+    }
+</script>
 
 </html>

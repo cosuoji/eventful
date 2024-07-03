@@ -12,7 +12,7 @@
         <h2>Forgot Password</h2>
 
         <!-- FORMULAIRE -->
-        <form class="form" action="/forgot/:userId/:token" method="POST">
+        <form class="form" action="/forgot/" method="POST">
             <p>Please enter the email you signed up with</p>
             <input type="email" placeholder="Email Address" class="email" name="email" required>
             <!-- MOT DE PASSE OUBLIE ? -->
@@ -134,12 +134,6 @@
     }
 </style>
 
-<script>
-    window.onload = function () {
-            var frm = document.forms[0];
-            frm.action = frm.action + location.search;
-            console.log(frm.action)
-        }
-</script>
+
 
 </html>

@@ -5,7 +5,7 @@ import morgan from "morgan"
 import authRoute from "./routes/authRoutes.js"
 import bodyParser from "body-parser"
 import ejs from "ejs"
-import httpLogger from "./logger/httplogger.js"
+//import httpLogger from "./logger/httplogger.js"
 
 
 
@@ -18,7 +18,7 @@ app.use(bodyParser.json())
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended: false}))
-app.use(httpLogger)
+//app.use(httpLogger)
 
 
 

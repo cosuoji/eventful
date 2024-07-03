@@ -2,7 +2,7 @@
 import { Router } from "express";
 import {generateMiddleware} from "../middleware/generatedMiddleware.js"
 import * as authController from "../controllers/authController.js"
-import { loginSchema, newPasswordSchema, registerSchema, resetSchema } from "../validations/authValidations.js";
+import { loginSchema, passwordSchema, registerSchema, resetSchema } from "../validations/authValidations.js";
 
 
 
@@ -45,6 +45,6 @@ authRoute.post('/creatorsignup', generateMiddleware(registerSchema), authControl
 authRoute.post('/creatorlogin', generateMiddleware(loginSchema), authController.login)
 authRoute.get("/logout", authController.logout)
 authRoute.post("/forgot", generateMiddleware(resetSchema), authController.forgotPassword)
-authRoute.post("/forgot/:userId/:token", generateMiddleware(newPasswordSchema), authController.resetPassword)
+authRoute.post("/forgot/:userId/:token", generateMiddleware(passwordSchema), authController.resetPassword)
 
 export default authRoute

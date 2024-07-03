@@ -19,6 +19,8 @@ export const resetSchema = Joi.object({
   email: Joi.string().email().required()
 })
 
-export const newPasswordSchema = Joi.object({
-  password: Joi.string().required(),
+export const passwordSchema = Joi.object({
+  userId: Joi.string(),
+  token: Joi.string(),
+  password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
 })
