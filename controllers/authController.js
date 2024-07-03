@@ -1,6 +1,8 @@
 import * as authService from "../services/authService.js"
 export let tokenToUse
 
+
+
 export const login = async (req, res, next)=>{
     try {
         const { email, password} = req.body;
@@ -10,14 +12,8 @@ export const login = async (req, res, next)=>{
         if(tokenToUse){
             req.header.authorization = "Bearer" + tokenToUse
         }
-        
-
-        res.json({
-            message: "Login successful",
-            data: {
-            accessToken: token, 
-      },
-    })
+    
+        res.redirect("index")
     
     }
     catch(err){
@@ -29,9 +25,9 @@ export const login = async (req, res, next)=>{
 
 export const register = async (req, res)=>{
     try {
-    const {username, name,password, confirm_password, email} = req.body
-    const result = await authService.register(username, name,password, confirm_password, email)
-    res.redirect("/")
+    const {name,password,email} = req.body
+    await authService.register(name,email,password, creatorPath)
+    res.redirect("index")
     }
     catch(err){
         res.status(err.status || 500);
@@ -42,10 +38,35 @@ export const register = async (req, res)=>{
 
 export const logout = async(req, res) =>{
     try{
-        const result = await authService.logout(tokenToUse);
-        res.redirect("/")
+        await authService.logout(tokenToUse);
+        res.redirect("index")
     } catch(err){
         res.status(err.status || 500);
         res.json({message: err.message})
+    }
+}
+
+export const forgotPassword = async(req, res) =>{
+    try{
+        const {email} = req.body
+        let result = await authService.forgotPassword(email);
+        res.json({result})
+    }
+    catch(err){
+        res.status(err.status || 500);
+        res.json({message: err.message})
+    }
+}
+
+export const resetPassword = async(req, res) =>{
+    try{
+        console.log(req.body)
+        const {userId, token}  = req.query.params
+        const {newPassword} = req.body
+        const result = await authService.resetPassword(userId, newPassword, token)
+        res.json({result})
+    } catch(err){
+        res.status(err.status || 500);
+        res.json({message: err.message}) 
     }
 }

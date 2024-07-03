@@ -1,12 +1,12 @@
 
 import { Router } from "express";
-import { generateMiddleware } from "../middleware/generatedMiddleware.js";
-import * as authController from "../controller/authController.js"
-import { loginSchema, registerSchema } from "../validations/authValidations.js";
+import {generateMiddleware} from "../middleware/generatedMiddleware.js"
+import * as authController from "../controllers/authController.js"
+import { loginSchema, newPasswordSchema, registerSchema, resetSchema } from "../validations/authValidations.js";
 
 
 
-dotenv.config()
+
 const authRoute = Router()
 
 
@@ -16,18 +16,35 @@ authRoute.get('/', async(req, res)=> {
   });
 });
 
+authRoute.get('/usersignup', async(req, res)=> {
+   res.render('userSignup')
+});
+
 authRoute.get('/userlogin', async(req, res)=> {
-   res.render('loginSelections', {
-    title: 'Eventful',
-  });
+   res.render('userLogin')
+});
+
+authRoute.get('/creatorsignup', async(req, res)=> {
+   res.render('creatorSignup')
+});
+
+authRoute.get('/forgot', async(req, res)=> {
+   res.render('forgot')
 });
 
 authRoute.get('/creatorlogin', async(req, res)=> {
-   res.render('loginSelections', {
-    title: 'Eventful',
-  });
+   res.render('creatorlogin')
 });
 
+authRoute.get("/forgot/:userId/:token", async(req, res)=>{
+  res.render("reset")
+})
 
+
+authRoute.post('/creatorsignup', generateMiddleware(registerSchema), authController.register)
+authRoute.post('/creatorlogin', generateMiddleware(loginSchema), authController.login)
+authRoute.get("/logout", authController.logout)
+authRoute.post("/forgot", generateMiddleware(resetSchema), authController.forgotPassword)
+authRoute.post("/forgot/:userId/:token", generateMiddleware(newPasswordSchema), authController.resetPassword)
 
 export default authRoute
