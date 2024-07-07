@@ -21,27 +21,27 @@ export const login = async (email, password) =>{
     }
 
     //Generate the JWT Token
-    const JWT_SECRET = process.env.JWT_SECRET || "secret";
+    const JWT_SECRET = process.env.JWT_SECRET 
     const token = jwt.sign({
         email: user.email,
         _id: user._id,
-        sub: user._id
+        sub: user._id,
     },
 
         //Set it to expire in an hour
-        JWT_SECRET, {expiresIn: "1hr"}   
-)
+        JWT_SECRET, {expiresIn: "1hr"})
+
         return{
             message: "Login Successful",
             data: {
                 accessToken: token,
-                //user: user,
+                user: user.role,
             }
         }
 
 }
 
-export const register = async (name, email, password, creatorPath, userPath) =>{
+export const register = async (name, email, password,path) =>{
     //check if email exists
     const user = await User.findOne({email})
     if(user){
@@ -50,8 +50,10 @@ export const register = async (name, email, password, creatorPath, userPath) =>{
 
     let role = ""
 
-    if(creatorPath){
+    if(path === "/creatorsignup"){
        role = "Creator"
+    } else {
+        role = "User"
     }
     
 

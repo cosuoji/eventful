@@ -4,9 +4,10 @@ import { tokenToUse, role } from "../controller/authController.js"
 const JWT_SECRET=process.env.JWT_SECRET
 
 
-export const authMiddleware = async (req, res, next) =>{
+export const creatorMiddleware = async (req, res, next) =>{
         // set the retrieved token to authorization
     const authorization = tokenToUse;
+    const loginRole = role;
 
     const checkIfBlackListed = await blacklist.findOne({token: tokenToUse});
 
@@ -17,8 +18,8 @@ export const authMiddleware = async (req, res, next) =>{
     }
 
 
-    if(!authorization){
-        return res.status(401).json({message: "Not Authorized to create or view events"})
+    if(!authorization || loginRole !== "Creator"){
+        return res.status(401).json({message: "Create events"})
     }
 
       jwt.verify(authorization, JWT_SECRET, (err, decoded)=>{

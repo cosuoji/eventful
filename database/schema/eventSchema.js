@@ -1,29 +1,25 @@
 import mongoose from "mongoose";
 
 
-const userSchema = mongoose.Schema({
+const eventSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
         trim: true,
     },
-    email:{
+    address:{
         type:String,
         required: true,
     },
-    password:{
-        type: String, 
+    ticketsAvailable:{
+        type: Number, 
         required: true,
     }, 
-    role:{
-        type:String,
-        default: "User"
-    }
 }, {
     timestamps: true
 })
 
-userSchema.set("toJSON", {
+eventSchema.set("toJSON", {
     virtuals: true, 
     versionKey: false, 
     transform: function(doc, ret){
@@ -31,5 +27,5 @@ userSchema.set("toJSON", {
     }
 })
 
-const User = mongoose.model("user", userSchema)
-export default User
+const Event = mongoose.model("event", eventSchema)
+export default Event

@@ -1,5 +1,5 @@
 import * as authService from "../services/authService.js"
-export let tokenToUse
+export let tokenToUse, role
 
 
 
@@ -8,6 +8,7 @@ export const login = async (req, res, next)=>{
         const { email, password} = req.body;
         const token = await authService.login(email, password)
         tokenToUse = token.data.accessToken
+        role = token.data.role
 
         if(tokenToUse){
             req.header.authorization = "Bearer" + tokenToUse
@@ -26,7 +27,10 @@ export const login = async (req, res, next)=>{
 export const register = async (req, res)=>{
     try {
     const {name,password,email} = req.body
-    await authService.register(name,email,password, creatorPath)
+    const path = req.url
+    console.log(path)
+    await authService.register(name,email,password, path)
+
     res.redirect("index")
     }
     catch(err){

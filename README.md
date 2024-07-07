@@ -18,7 +18,6 @@ Eventful is more than just a ticketing platform; it's your passport to a world o
 - Analytics: Eventful should be able to provide creators the ability to see how many attendees they have had all the time and specific to events. How many tickets have been bought all the time and specific to events. How many eventees bought tickets and had their QR code scanned for specific events
 
 # Best Practices:
-You are required to build with either Nodejs(TypeScript) or Python.
 Don't always hit the DB, use a cache layer.
 Ensure you write unit and integration tests where possible
 Implement rate limiting
@@ -27,7 +26,5 @@ It would be better if you could spec and document the API with OpenAPI using som
 
 
 # IDEAS 
-- login for user 
-- login for creators that want to buy tickets
-
-- if the user logs in from a  certian route, assign a role
+- Rate limiting, how many tickets a user can buy 
+- QR code will contain link to the event and the event ID?
