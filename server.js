@@ -5,6 +5,7 @@ import morgan from "morgan"
 import authRoute from "./routes/authRoutes.js"
 import bodyParser from "body-parser"
 import ejs from "ejs"
+import { rateLimiterUsingThirdParty } from "./utils/rateLimiter.js"
 //import httpLogger from "./logger/httplogger.js"
 
 
@@ -17,12 +18,14 @@ const PORT = process.env.PORT ||  5000
 app.use(bodyParser.json())
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(rateLimiterUsingThirdParty)
 app.use(bodyParser.urlencoded({extended: false}))
 //app.use(httpLogger)
 
 
 
 app.set('view engine', 'ejs');
+
 app.use("/", authRoute)
 
 

@@ -28,3 +28,6 @@ It would be better if you could spec and document the API with OpenAPI using som
 # IDEAS 
 - Rate limiting, how many tickets a user can buy 
 - QR code will contain link to the event and the event ID?
+- Every event created, add the userid who created it 
+- Render event on the front end so the creator can see event created
+- Do a view where it shows as lists and then opens as the Id of the event

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import blacklist from "../database/schema/blacklistSchema.js";
-import { tokenToUse, role } from "../controller/authController.js"
+import { tokenToUse} from "../controller/authController.js"
 const JWT_SECRET=process.env.JWT_SECRET
 
 

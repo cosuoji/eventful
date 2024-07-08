@@ -11,6 +11,9 @@ const eventSchema = mongoose.Schema({
         type:String,
         required: true,
     },
+    creator:{
+        type:String,
+    },
     ticketsAvailable:{
         type: Number, 
         required: true,

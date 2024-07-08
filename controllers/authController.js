@@ -13,8 +13,9 @@ export const login = async (req, res, next)=>{
         if(tokenToUse){
             req.header.authorization = "Bearer" + tokenToUse
         }
-    
-        res.redirect("index")
+        if(role === "Creator")  res.redirect("events")
+        if(role === "User")  res.redirect("userEvents")
+
     
     }
     catch(err){
@@ -28,7 +29,6 @@ export const register = async (req, res)=>{
     try {
     const {name,password,email} = req.body
     const path = req.url
-    console.log(path)
     await authService.register(name,email,password, path)
 
     res.redirect("index")
