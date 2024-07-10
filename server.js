@@ -5,7 +5,9 @@ import morgan from "morgan"
 import authRoute from "./routes/authRoutes.js"
 import bodyParser from "body-parser"
 import ejs from "ejs"
+import path from "path"
 import { rateLimiterUsingThirdParty } from "./utils/rateLimiter.js"
+import creatoRoute from "./routes/creatorRoutes.js"
 //import httpLogger from "./logger/httplogger.js"
 
 
@@ -20,6 +22,7 @@ app.use(express.json())
 app.use(morgan('dev'))
 app.use(rateLimiterUsingThirdParty)
 app.use(bodyParser.urlencoded({extended: false}))
+app.use(express.static('public'))
 //app.use(httpLogger)
 
 
@@ -27,6 +30,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.set('view engine', 'ejs');
 
 app.use("/", authRoute)
+app.use("/creator", creatoRoute)
 
 
 //catch other routes

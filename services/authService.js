@@ -143,7 +143,7 @@ export const resetPassword = async(userId, newPassword, newToken) =>{
         throw new ErrorWithStatus("Invalid Token", 500)
     }
 
-    console.log(newPassword)
+
 
     // Hash the new password
     const salt = await bcrypt.genSalt(10);

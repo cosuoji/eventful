@@ -24,3 +24,9 @@ export const passwordSchema = Joi.object({
   token: Joi.string(),
   password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
 })
+
+export const eventSchema = Joi.object({
+  name: Joi.string().required(),
+  address: Joi.string().required(),
+  ticketsAvailable: Joi.number().required()
+})

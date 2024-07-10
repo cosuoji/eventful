@@ -1,6 +1,10 @@
 import jwt from "jsonwebtoken"
 import blacklist from "../database/schema/blacklistSchema.js";
-import { tokenToUse, role } from "../controller/authController.js"
+import { tokenToUse, role } from "../controllers/authController.js"
+export let creatorUserId 
+import dotenv from "dotenv"
+dotenv.config()
+
 const JWT_SECRET=process.env.JWT_SECRET
 
 
@@ -19,19 +23,19 @@ export const creatorMiddleware = async (req, res, next) =>{
 
 
     if(!authorization || loginRole !== "Creator"){
-        return res.status(401).json({message: "Create events"})
+        return res.status(401).json({message: "No permission to Create events"})
     }
 
       jwt.verify(authorization, JWT_SECRET, (err, decoded)=>{
         if(err){
-            return res.status(401).json({message: "Unauthorized"})
+            return res.status(401).json({message: "Unauthorized", error: err})
         }
 
     
         
         req.user = decoded
-        emailId = decoded.email
-        userId = decoded._id
+        //emailId = decoded.email
+        creatorUserId  = decoded._id
         next();
     })
 

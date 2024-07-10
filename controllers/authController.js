@@ -8,15 +8,25 @@ export const login = async (req, res, next)=>{
         const { email, password} = req.body;
         const token = await authService.login(email, password)
         tokenToUse = token.data.accessToken
-        role = token.data.role
+        role = token.data.user
+
+        //console.log(req.path, token)
 
         if(tokenToUse){
             req.header.authorization = "Bearer" + tokenToUse
         }
-        if(role === "Creator")  res.redirect("events")
-        if(role === "User")  res.redirect("userEvents")
-
-    
+        if(role === "User" && req.path !== "/userlogin") {
+            console.log("user account, redirection")
+            res.redirect("/userlogin")
+        }
+        else if(role === "User" && req.path === "/userlogin") {
+          res.redirect("/users")
+        } else if (role === "Creator" && req.path !== "/creatorlogin") {
+            console.log("creator account, redirection")
+            res.redirect("/creatorlogin")
+        } else{
+            res.redirect("/creator")
+        }
     }
     catch(err){
         res.status(err.status || 500);
@@ -31,7 +41,7 @@ export const register = async (req, res)=>{
     const path = req.url
     await authService.register(name,email,password, path)
 
-    res.redirect("index")
+    res.redirect("/creatorlogin")
     }
     catch(err){
         res.status(err.status || 500);
@@ -43,7 +53,7 @@ export const register = async (req, res)=>{
 export const logout = async(req, res) =>{
     try{
         await authService.logout(tokenToUse);
-        res.redirect("index")
+        res.redirect("/")
     } catch(err){
         res.status(err.status || 500);
         res.json({message: err.message})

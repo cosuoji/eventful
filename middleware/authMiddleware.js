@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken"
 import blacklist from "../database/schema/blacklistSchema.js";
-import { tokenToUse} from "../controller/authController.js"
+import { tokenToUse} from "../controllers/authController.js"
+export let userId
 const JWT_SECRET=process.env.JWT_SECRET
 
 
@@ -24,10 +25,7 @@ export const authMiddleware = async (req, res, next) =>{
       jwt.verify(authorization, JWT_SECRET, (err, decoded)=>{
         if(err){
             return res.status(401).json({message: "Unauthorized"})
-        }
-
-    
-        
+        }     
         req.user = decoded
         emailId = decoded.email
         userId = decoded._id
