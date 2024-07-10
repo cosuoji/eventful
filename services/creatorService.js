@@ -27,7 +27,7 @@ export const getAllEvents = async() =>{
   try{
     const eventToDisplay = await Event.find({creator: creatorUserId})
     const user = await User.findById(creatorUserId)
-    console.log(user)
+    //console.log(user)
     const listOfEvents = [];
     const listOfEventIds = [];
     //console.log(userToDsiplay)
@@ -112,3 +112,14 @@ export const deleteEvent = async(eventToDelete) =>{
     }
 }
 
+export const oneEvent = async(eventId)=>{
+    try{
+        const eventToView = await Event.findById(eventId)
+        return {
+            message: eventToView
+        }
+
+    } catch(error){
+        throw new ErrorWithStatus(error.message, 500)
+    }
+}

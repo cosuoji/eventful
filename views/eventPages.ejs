@@ -1,0 +1,48 @@
+<%- include('partials/header') -%>
+
+<div class="relative flex flex-col overflow-hidden text-gray-700 bg-white rounded-md shadow-md w-96 bg-clip-border">
+    <nav class="my-2 flex min-w-[240px] flex-col gap-1 p-0 font-sans text-base font-normal text-blue-gray-700">
+        <div
+           class="flex w-full items-center rounded-none p-3 py-1.5 px-3 text-start text-sm font-normal text-blue-gray-700 outline-none transition-all">
+            <div class="grid mr-4 place-items-center">
+                <i class="fa fa-id-card-o"></i>
+            </div>
+            <%= name %>
+        </div>
+        <div class="flex w-full items-center rounded-none p-3 py-1.5 px-3 text-start text-sm font-normal text-blue-gray-700 outline-none transition-all">
+            <div class="grid mr-4 place-items-center">
+                <i class="fa fa-map"></i>
+            </div>
+            <%= address %>
+        </div>
+        <div 
+            class="flex w-full items-center rounded-none p-3 py-1.5 px-3 text-start text-sm font-normal text-blue-gray-700 outline-none transition-all">
+            <div class="grid mr-4 place-items-center">
+                <i class="fa fa-ticket"></i>
+            </div>
+            Tickets Available
+            <div class="grid ml-auto place-items-center justify-self-end">
+                <div
+                    class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-gray-900 uppercase rounded-full select-none whitespace-nowrap bg-gray-900/10 group-hover:bg-white/20 group-hover:text-white">
+                    <span class=""><%= ticketsAvailable %></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <button id="editevent" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Edit Event
+    </button>
+    <button id="deleteevent" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Delete Event
+    </button>
+</div>
+
+<script>
+    window.addEventListener("load", (event)=>{
+        let editevent = document.getElementById("editevent")
+        let deleteevent = document.getElementById("deleteevent")
+
+        
+    })
+</script>

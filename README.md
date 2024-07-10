@@ -7,7 +7,6 @@ Ticketing Platform
 Eventful is more than just a ticketing platform; it's your passport to a world of unforgettable moments. From pulsating concerts to captivating theater performances, and thrilling sports events to enlightening cultural gatherings, we curate a diverse array of experiences that cater to every taste and passion.
 
 # Requirements and Implementation Guide
-- Authentication and Authorization: Event creators and users who can apply for those events should be authenticated. Creators can see events they have created and those that have applied to their events and eventees should be able to see all the events they can attend and also attend
 
 - QR Code Generation: Eventful should be able to generate QR codes for eventees when the tickets are bought. This QR code would be used to verify that the eventee is valid and can have access to this event.
 
@@ -20,14 +19,12 @@ Eventful is more than just a ticketing platform; it's your passport to a world o
 # Best Practices:
 Don't always hit the DB, use a cache layer.
 Ensure you write unit and integration tests where possible
-Implement rate limiting
 It would be better if you could spec and document the API with OpenAPI using something like https://stoplight.io/
 
 
 
 # IDEAS 
-- Rate limiting, how many tickets a user can buy 
+- show much tickets are left, show soold out when completed 
 - QR code will contain link to the event and the event ID?
-- Every event created, add the userid who created it 
-- Render event on the front end so the creator can see event created
-- Do a view where it shows as lists and then opens as the Id of the event
+ - Do a view where it shows as lists and then opens as the Id of the event
+ - Next step would be to modify event

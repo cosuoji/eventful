@@ -12,6 +12,6 @@ creatoRoute.get("/", creatorMiddleware, creatorController.getAllEvents)
 creatoRoute.post("/", creatorMiddleware,  generateMiddleware(eventSchema), creatorController.addEvent)
 creatoRoute.put("/", creatorMiddleware,  creatorController.updateEvent)
 creatoRoute.delete("/", creatorMiddleware, creatorController.deleteEvent)
-//creatoRoute.get("/events/:id", creatorMiddleware, creatorController.getAllEvents)
+creatoRoute.get("/events/:id", creatorMiddleware, creatorController.oneEvent)
 
 export default creatoRoute

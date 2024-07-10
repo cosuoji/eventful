@@ -1,3 +1,4 @@
+import { name } from "ejs";
 import * as creatorService from "../services/creatorService.js"
 
 export const addEvent = async(req, res)=>{
@@ -5,7 +6,6 @@ export const addEvent = async(req, res)=>{
         //console.log(req.body)
         const {name, address, ticketsAvailable}  = req.body;
         const result = await creatorService.addEvent(name, address, ticketsAvailable);
-        console.log(result)
         res.render("creator.ejs", {listOfEvents: result.events.eventList, arrayOfIds: result.events.eventIdArray, username: result.user})
 
     }
@@ -55,3 +55,13 @@ export const deleteEvent = async(req,res) =>{
     }
 }
 
+export const oneEvent = async(req, res)=>{
+    try{
+        const eventId = req.params.id
+        const result = await creatorService.oneEvent(eventId)
+        //console.log(result)
+        res.render("eventPages", {name: result.message.name, address: result.message.address, ticketsAvailable: result.message.ticketsAvailable} )
+    } catch(error){
+        res.status(500).json({message: error.message})
+    }
+}
