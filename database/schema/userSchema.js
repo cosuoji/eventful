@@ -18,6 +18,14 @@ const userSchema = mongoose.Schema({
     role:{
         type:String,
         default: "User"
+    },
+    eventsBoughtTicketsFor:{
+        type: Array,
+        default: []
+    },
+    totalAmountOfTicketsBought:{
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true

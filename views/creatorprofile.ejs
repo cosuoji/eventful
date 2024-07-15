@@ -1,0 +1,75 @@
+<%- include('partials/header') -%>
+<div>
+    <button id="back" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+        Back
+    </button>
+</div>
+
+<div class="relative overflow-x-auto">
+    <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    </table>
+</div>
+
+<div class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+    <h3>Lifetime QR Codes Scanned: <span id="qrcode"></span></h3>
+    <h3>Lifetime Tickets Sold: <span id="ticketsales"></span></h3>
+</div>
+
+
+
+
+
+<script>
+   let table = document.getElementById("table")
+   let qrcode = document.getElementById("qrcode");
+   let ticketsales = document.getElementById("ticketsales")
+   let backButton = document.getElementById("back")
+    backButton.addEventListener("click", event => {
+         history.back()
+         })
+
+ let analyArr = []
+ window.app = <%- analyticsArray %>   
+ analyArr = [...window.app]
+ 
+
+
+ function generateTableHead(table, data){
+    let thead = table.createTHead()
+    thead.classList.add("text-xs","text-gray-700", "uppercase", "bg-gray-50","dark:bg-gray-700","dark:text-gray-400")
+    let row = thead.insertRow()
+    row.classList.add("bg-white", "dark:bg-gray-800")
+    
+    for(let key of data){
+        if(key === "name") key = "Event Name"
+        if(key === 'qrscanned') key = "QR Scans"
+        if(key === "ticketsSold") key = "Tickets Sold"
+        let th = document.createElement("th");
+        th.classList.add("px-6","py-4" ,"font-medium","text-gray-900", "whitespace-nowrap", "dark:text-white")
+        let text = document.createTextNode(key);
+        th.appendChild(text)
+        row.appendChild(th)
+    }
+ }
+let data = Object.keys(analyArr[0]);
+generateTableHead(table, data);
+
+function generateTable(table, data) {
+        for (let element of data) {
+            let row = table.insertRow();
+            row.classList.add("bg-white", "dark:bg-gray-800")
+            for (key in element) {
+                let cell = row.insertCell();
+                cell.classList.add("px-6", "py-4")
+                let text = document.createTextNode(element[key]);
+                cell.appendChild(text);
+            }
+        }
+    }
+
+ generateTable(table, analyArr)   
+
+qrcode.innerHTML = analyArr.reduce((acc, curr) => acc.qrscanned + curr.qrscanned)
+ticketsales.innerHTML = analyArr.reduce((acc, curr) => acc.ticketsSold + curr.ticketsSold)
+</script>
+

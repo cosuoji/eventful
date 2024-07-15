@@ -20,7 +20,7 @@ export const login = async (req, res, next)=>{
             res.redirect("/userlogin")
         }
         else if(role === "User" && req.path === "/userlogin") {
-          res.redirect("/users")
+          res.redirect("/user")
         } else if (role === "Creator" && req.path !== "/creatorlogin") {
             console.log("creator account, redirection")
             res.redirect("/creatorlogin")
@@ -40,8 +40,8 @@ export const register = async (req, res)=>{
     const {name,password,email} = req.body
     const path = req.url
     await authService.register(name,email,password, path)
-
-    res.redirect("/creatorlogin")
+    if(path === "/usersignup") res.redirect("/userlogin")
+    if(path === "/creatorsignup") res.redirect("/creatorlogin")
     }
     catch(err){
         res.status(err.status || 500);

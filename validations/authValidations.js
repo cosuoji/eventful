@@ -28,5 +28,6 @@ export const passwordSchema = Joi.object({
 export const eventSchema = Joi.object({
   name: Joi.string().required(),
   address: Joi.string().required(),
-  ticketsAvailable: Joi.number().required()
+  ticketsAvailable: Joi.number().required(),
+  date: Joi.date().required()
 })

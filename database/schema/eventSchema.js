@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const eventSchema = mongoose.Schema({
     name: {
         type: String,
@@ -18,6 +17,23 @@ const eventSchema = mongoose.Schema({
         type: Number, 
         required: true,
     }, 
+    date:{
+        type: Date,
+        required: true,
+        min: new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))
+    }, 
+    usersBought:{
+	type: Array,
+	default: [],
+    }, 
+    ticketsSold:{
+        type: Number, 
+        default: 0
+    },
+    qrCodesScanned:{
+        type: Number, 
+        default:0,
+    }
 }, {
     timestamps: true
 })

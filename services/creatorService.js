@@ -1,13 +1,13 @@
 import Event from "../database/schema/eventSchema.js";
 import User from "../database/schema/userSchema.js";
-import {userId} from "../middleware/authMiddleware.js"
 import { creatorUserId } from "../middleware/creatorMiddleware.js";
 import ErrorWithStatus from "../exceptions/errorStatus.js";
 
-export const addEvent = async(name, address, ticketsAvailable)=>{
+
+export const addEvent = async(name, address, ticketsAvailable, date)=>{
     try{
 
-        const newEvent = new Event({name, address, ticketsAvailable, creator: creatorUserId});
+        const newEvent = new Event({name, address, ticketsAvailable, creator: creatorUserId, date});
         await newEvent.save();
         return {
             message: "new event created",
@@ -22,10 +22,38 @@ export const addEvent = async(name, address, ticketsAvailable)=>{
 }
 
 
+export const displayAnalytics = async() =>{
+ const timeframe = new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))
+    try{
+     const eventToDisplay = await Event.find({creator: creatorUserId, date: {
+        $gte: timeframe
+    }})
+
+     let arrayToSend = []
+     let qrReduce = []
+    
+    
+
+    for(let i = 0; i < eventToDisplay.length; i++){
+        arrayToSend.push({name: eventToDisplay[i].name, qrscanned: eventToDisplay[i].qrCodesScanned, ticketsSold: eventToDisplay[i].ticketsSold})
+    } 
+ 
+     return {
+        result: arrayToSend
+    }
+
+
+    } catch(error){
+        throw new ErrorWithStatus(error.message, 500)
+    }
+}
 
 export const getAllEvents = async() =>{
   try{
-    const eventToDisplay = await Event.find({creator: creatorUserId})
+    const timeframe = new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))
+    const eventToDisplay = await Event.find({creator: creatorUserId, date: {
+        $gte: timeframe
+    }})
     const user = await User.findById(creatorUserId)
     //console.log(user)
     const listOfEvents = [];
@@ -57,46 +85,47 @@ export const getAllEvents = async() =>{
 
 
 
-export const updateEvent = async (eventId, name, address, ticketsAvailable) =>{
-    try{
-        const eventToUpdate = await Event.findOne({_id: eventId})
-        //console.log(toDoChecker)
+// export const updateEvent = async (eventId, name, address, ticketsAvailable) =>{
+//     try{
+//         const eventToUpdate = await Event.findOne({_id: eventId})
+//         //console.log(toDoChecker)
 
-        if(!eventToUpdate){
-            throw new ErrorWithStatus("event not found", 400)
-        }
+//         if(!eventToUpdate){
+//             throw new ErrorWithStatus("event not found", 400)
+//         }
 
-        if(eventToUpdate[0].creator !== userId){
-            throw new ErrorWithStatus("You don't have permission to edit this", 400)
-        }
+//         if(eventToUpdate[0].creator !== userId){
+//             throw new ErrorWithStatus("You don't have permission to edit this", 400)
+//         }
 
         
 
-        await Event.findOneAndUpdate({_id:eventToUpdate}, {name: name, address: address, ticketsAvailable: ticketsAvailable})
-        return {
-            message: "Changes Saved",
-            data:{
-                body: eventToUpdate,
-                lastOne: await getAllEvents()
-            }
-        }
+//         await Event.findOneAndUpdate({_id:eventToUpdate}, {name: name, address: address, ticketsAvailable: ticketsAvailable})
+//         return {
+//             message: "Changes Saved",
+//             data:{
+//                 body: eventToUpdate,
+//                 lastOne: await getAllEvents()
+//             }
+//         }
         
         
-    }
-    catch(error){
-        throw new ErrorWithStatus(error.message, 500)
-    }
+//     }
+//     catch(error){
+//         throw new ErrorWithStatus(error.message, 500)
+//     }
 
-}
+// }
 
 export const deleteEvent = async(eventToDelete) =>{
     try{    
         const eventChecker = await Event.find({_id: eventToDelete})
+        console.log(eventChecker)
         if(eventChecker.length < 1){
             throw new ErrorWithStatus("event not found", 400)
         }
 
-        if(eventChecker[0].creator !== userId){
+        if(eventChecker[0].creator !== creatorUserId){
             throw new ErrorWithStatus("You don't have permission to edit this", 400)
         }
 
@@ -123,3 +152,4 @@ export const oneEvent = async(eventId)=>{
         throw new ErrorWithStatus(error.message, 500)
     }
 }
+

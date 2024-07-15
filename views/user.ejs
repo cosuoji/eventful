@@ -1,0 +1,27 @@
+<%- include('partials/header') -%>
+
+    <div>
+        <h3 class="text-left block text-md font-medium leading-10 text-gray-900">List of Events listed On Eventful</h3>
+        <div>
+            <ul>
+                <% for (let i=0; i < listOfEvents.length ; i++) { %>
+                    <li>
+                        <a class="links block text-md font-medium leading-10 text-gray-900"
+                            href="/user/events/<%=arrayOfIds[i] %>">
+                            <p style="display: inline;" class="events" value="<%=arrayOfIds[i] %>">
+                                <%= listOfEvents[i] %>
+                            </p>
+                        </a>
+                        <% } %>
+                    </li>
+            </ul>
+    
+        </div>
+    
+    </div>
+
+    <style>
+        .links {
+            color: blue;
+        }
+    </style>

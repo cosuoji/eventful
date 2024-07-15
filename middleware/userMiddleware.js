@@ -1,6 +1,10 @@
 import jwt from "jsonwebtoken"
 import blacklist from "../database/schema/blacklistSchema.js";
-import { tokenToUse, role } from "../controller/authController.js"
+import { tokenToUse, role } from "../controllers/authController.js"
+export let userId 
+import dotenv from "dotenv"
+dotenv.config()
+
 const JWT_SECRET=process.env.JWT_SECRET
 
 
@@ -19,7 +23,7 @@ export const userMiddleware = async (req, res, next) =>{
 
 
     if(!authorization || loginRole !== "User"){
-        return res.status(401).json({message: "Create events"})
+        return res.status(401).json({message: "Cannot View Events, please signup/ login"})
     }
 
       jwt.verify(authorization, JWT_SECRET, (err, decoded)=>{
@@ -30,7 +34,7 @@ export const userMiddleware = async (req, res, next) =>{
     
         
         req.user = decoded
-        emailId = decoded.email
+        //emailId = decoded.email
         userId = decoded._id
         next();
     })

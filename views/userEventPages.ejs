@@ -1,0 +1,180 @@
+<%- include('partials/header') -%>
+
+    <button id="back" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+        Back
+    </button>
+
+
+    <div class="relative flex flex-col overflow-hidden text-gray-700 bg-white rounded-md shadow-md w-96 bg-clip-border">
+        <nav class="my-2 flex min-w-[240px] flex-col gap-1 p-0 font-sans text-base font-normal text-blue-gray-700">
+            <div id="nameInput"
+                class="flex w-full items-center rounded-none p-3 py-1.5 px-3 text-start text-sm font-normal text-blue-gray-700 outline-none transition-all">
+                <div class="grid mr-4 place-items-center">
+                    <i class="fa fa-id-card-o"></i>
+                </div>
+                <%= name %>
+            </div>
+            <div
+                class="flex w-full items-center rounded-none p-3 py-1.5 px-3 text-start text-sm font-normal text-blue-gray-700 outline-none transition-all">
+                <div class="grid mr-4 place-items-center">
+                    <i class="fa fa-map"></i>
+                </div>
+                <%= address %>
+            </div>
+            <div
+                class="flex w-full items-center rounded-none p-3 py-1.5 px-3 text-start text-sm font-normal text-blue-gray-700 outline-none transition-all">
+                <div class="grid mr-4 place-items-center">
+                    <i class="fa fa-ticket"></i>
+                </div>
+                Tickets Available
+                <div class="grid ml-auto place-items-center justify-self-end">
+                    <div
+                        class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-gray-900 uppercase rounded-full select-none whitespace-nowrap bg-gray-900/10 group-hover:bg-white/20 group-hover:text-white">
+                        <span id="available" class="">
+                            <%= ticketsAvailable %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="flex w-full items-center rounded-none p-3 py-1.5 px-3 text-start text-sm font-normal text-blue-gray-700 outline-none transition-all">
+                <div class="grid mr-4 place-items-center">
+                    <i class="fa fa-clock"></i>
+                </div>
+                Date
+                <div class="grid ml-auto place-items-center justify-self-end">
+                    <div
+                        class="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-gray-900 uppercase rounded-full select-none whitespace-nowrap bg-gray-900/10 group-hover:bg-white/20 group-hover:text-white">
+                        <span class="">
+                            <%= date %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="">
+            <label for="quantity-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose
+                quantity of tickets for purchase :</label>
+                <div class="custom-number-input">
+                    <div class="flex flex-row h-12 w-full rounded-lg relative bg-transparent mt-1">
+                        <button data-action="decrement"
+                            class=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none">
+                            <span class="m-auto text-2xl font-thin">−</span>
+                        </button>
+                        <input type="number" id="ticketsToBuy"
+                            class="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
+                            name="custom-input-number" value="0"></input>
+                        <button data-action="increment"
+                            class="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer">
+                            <span class="m-auto text-2xl font-thin">+</span>
+                        </button>
+                        <button id="purchaseticket" class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
+                            Buy Tix
+                        </button>
+                    </div>
+                                <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <%= ticketsAvailable %> Tickets Available
+                                </p>
+            </div>
+
+
+            </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 text-center items-center justify-content-center p-12">
+        <a href="https://x.com/share"><i class="fa fa-twitter"> Share on Twitter</i></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=#url"><i class="fa fa-facebook"> Share on Facebook</i></a>
+    </div>
+
+
+    <script>
+        window.addEventListener("load", (event) => {
+            let purchase = document.getElementById("purchaseticket")
+            let ticketsAmount = document.getElementById("ticketsToBuy")
+            let backButton = document.getElementById("back")
+
+            backButton.addEventListener("click", event => {
+                history.back()
+            })
+
+
+            purchase.addEventListener("click", event => {
+                const queryString = window.location.pathname.split("/")[3]
+                console.log(ticketsAmount.value)
+
+            //     fetch("/user", {
+            //         method: "POST",
+            //         body: JSON.stringify({
+            //             event: queryString
+            //         }),
+            //         headers: {
+            //             "Content-type": "application/json; charset=UTF-8"
+            //         }
+            //     })
+            //         .then((response) => response.json())
+            //         .then((json) => {
+            //             window.location.href = "/creator"
+            //             console.log(json)
+            //         });
+             })
+
+        })
+
+        if (<%= ticketsAvailable %> === 0) {
+            available.innerHTML = "Sold Out"
+        }
+
+
+  function decrement(e) {
+    const btn = e.target.parentNode.parentElement.querySelector(
+                'button[data-action="decrement"]'
+                );
+                const target = btn.nextElementSibling;
+                let value = Number(target.value);
+                value--;
+                target.value = value;
+  }
+
+    function increment(e) {
+    const btn = e.target.parentNode.parentElement.querySelector(
+                'button[data-action="decrement"]'
+                );
+                const target = btn.nextElementSibling;
+                let value = Number(target.value);
+                value++;
+                target.value = value;
+  }
+
+                const decrementButtons = document.querySelectorAll(
+                `button[data-action="decrement"]`
+                );
+
+                const incrementButtons = document.querySelectorAll(
+                `button[data-action="increment"]`
+                );
+
+  decrementButtons.forEach(btn => {
+                    btn.addEventListener("click", decrement);
+  });
+
+  incrementButtons.forEach(btn => {
+                    btn.addEventListener("click", increment);
+  });
+
+ </script>
+
+    <style>
+        input[type='number']::-webkit-inner-spin-button,
+        input[type='number']::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    
+        .custom-number-input input:focus {
+            outline: none !important;
+        }
+    
+        .custom-number-input button:focus {
+            outline: none !important;
+        }
+    </style>

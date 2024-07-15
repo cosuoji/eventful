@@ -8,6 +8,7 @@ import ejs from "ejs"
 import path from "path"
 import { rateLimiterUsingThirdParty } from "./utils/rateLimiter.js"
 import creatoRoute from "./routes/creatorRoutes.js"
+import useRoute from "./routes/userRoutes.js"
 //import httpLogger from "./logger/httplogger.js"
 
 
@@ -31,6 +32,7 @@ app.set('view engine', 'ejs');
 
 app.use("/", authRoute)
 app.use("/creator", creatoRoute)
+app.use("/user", useRoute)
 
 
 //catch other routes
