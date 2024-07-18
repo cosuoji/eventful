@@ -1,0 +1,54 @@
+<%- include('partials/defaultHeader') -%>
+
+<div class="w-full max-w-xs">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="purchaseid">
+                Purchase ID
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="purchaseid" type="text" placeholder="Purchase ID" disabled>
+        </div>
+        <div class="flex items-center justify-between">
+            <button id="submitid"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="button">
+                Confirm Purchase ID
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    window.addEventListener("load", event=>{
+        const purchaseid = document.getElementById("purchaseid")
+        const submit = document.getElementById("submitid")
+        purchaseIdvalue = window.location.pathname.split("/")[2]
+        purchaseid.value = purchaseIdvalue
+
+        submit.addEventListener("click", event=>{
+          try{
+
+            fetch("/verify", {
+                method: "POST",
+                body: JSON.stringify({
+                    purchaseId: purchaseIdvalue
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json)
+                });
+          } catch(error){
+             console.error('Promise rejected')
+          } 
+
+         })
+     })
+    
+
+</script>

@@ -25,7 +25,7 @@ export const purchaseTickets = async(req,res) =>{
     try{
         const {amount, ticketsToBuy} = req.body
         const result = await userService.purchaseTickets(ticketsToBuy, amount)
-        res.redirect("qrpage")
+        res.json(result)
     }
     catch(error){
         res.status(500).json({message: error.message})

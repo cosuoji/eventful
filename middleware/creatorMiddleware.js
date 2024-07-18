@@ -18,17 +18,20 @@ export const creatorMiddleware = async (req, res, next) =>{
     if(checkIfBlackListed){
         return res
             .status(401)
-            .json({message: "This session has expired. Please login"})
+            //.json({message: "This session has expired. Please login"})
+            .redirect("/")
     }
 
 
     if(!authorization || loginRole !== "Creator"){
-        return res.status(401).json({message: "No permission to Create events"})
+        return res.status(401).redirect("/")
+        //.json({message: "No permission to Create events"}).redirect("/")
     }
 
       jwt.verify(authorization, JWT_SECRET, (err, decoded)=>{
         if(err){
-            return res.status(401).json({message: "Unauthorized", error: err})
+            return res.status(401).redirect("/")
+            //.json({message: "Unauthorized", error: err})
         }
 
     

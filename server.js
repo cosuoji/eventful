@@ -9,6 +9,8 @@ import path from "path"
 import { rateLimiterUsingThirdParty } from "./utils/rateLimiter.js"
 import creatoRoute from "./routes/creatorRoutes.js"
 import useRoute from "./routes/userRoutes.js"
+import verifyRoute from "./routes/verfyRoute.js"
+
 //import httpLogger from "./logger/httplogger.js"
 
 
@@ -31,6 +33,7 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs');
 
 app.use("/", authRoute)
+app.use("/verify", verifyRoute)
 app.use("/creator", creatoRoute)
 app.use("/user", useRoute)
 

@@ -2,6 +2,10 @@ import Event from "../database/schema/eventSchema.js";
 import User from "../database/schema/userSchema.js";
 import { userId } from "../middleware/userMiddleware.js";
 import ErrorWithStatus from "../exceptions/errorStatus.js";
+import QR from "qrcode";
+import {sendEmail} from "../utils/sendEmail.js"
+import fs from 'fs'
+import { unlink } from 'node:fs';
 
 export const getAllEvents = async() =>{
   try{
@@ -54,8 +58,66 @@ export const purchaseTickets = async(ticketsToBuy, amount) =>{
         if(eventToCheck.length < 1){
             throw new ErrorWithStatus("event not found", 400)
         }
+
+        //check if the tickets available match
+        //deduct the amount of tickets from tickets available
+        if(eventToCheck.ticketsAvailable < amount){
+            throw new ErrorWithStatus("We don't have enough tickets", 400)
+        }else{
+            let newAmount = eventToCheck.ticketsAvailable - amount
+            await Event.findOneAndUpdate({_id: ticketsToBuy}, {ticketsAvailable: newAmount})
+        }
+        //add to the users bought, user id and amount
+        eventToCheck.usersBought.push({user: userId, ticketsBought: amount})
+        await eventToCheck.save();
+
+        //userschema, add event to array and total amount of tickets bought
+        const userUpdate = await User.findById(userId);
+	    userUpdate.purchaseIdCounter++;
+        const purchaseId = userId + userUpdate.purchaseIdCounter;
+        userUpdate.eventsBoughtTicketsFor.push({event: ticketsToBuy, amountOfTickets: amount, purchaseId: purchaseId, name: userUpdate.name, userId: userId})
+        await userUpdate.save()
+        //userschema, add amount of tickets to total
+        const userToUpdate = await User.findById(userId);
+        let newTicketTotal = userToUpdate.totalAmountOfTicketsBought + parseInt(amount)
+        await User.findOneAndUpdate({_id: userId}, {totalAmountOfTicketsBought: newTicketTotal})
+
+     
+
+        // let data = {
+        //     id: userId,
+        //     name: userToUpdate.name,
+        //     ticketsBought: amount,
+        //     event:  eventToCheck.name,
+        //     eventId: ticketsToBuy,
+        //     link: "https://livescore.com",
+        //     link: "localhost:3000/verify"
+        // }
+
+        // let stringdata = JSON.stringify(data);
+
+        const qrCodeString = await QR.toDataURL(`http://localhost:3000/verify/${purchaseId}`)
+        
+        let qrCodeImage = qrCodeString.split(';base64,').pop();
+
+        fs.writeFile('image.png', qrCodeImage, {encoding: 'base64'}, function(err) {
+                console.log('File created');
+            });
+    
+        
+        await sendEmail(userToUpdate.email, "Ticket QRCode" , `Please view the QR Code attached for the ${eventToCheck.name}`, "QRCode.png", "image.png");
+
+        unlink('image.png', (err) => {
+        if (err) throw err;
+        console.log('image.png was deleted');
+        }); 
+
+         return {
+            message: "Tickets Purchased",
+            events: await getAllEvents(),
+        }
     }
     catch(error){
-        res.status(500).json({message: error.message})
+        throw new ErrorWithStatus(error.message, 500)
     }
 }

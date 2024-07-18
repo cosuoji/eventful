@@ -30,9 +30,6 @@ export const displayAnalytics = async() =>{
     }})
 
      let arrayToSend = []
-     let qrReduce = []
-    
-    
 
     for(let i = 0; i < eventToDisplay.length; i++){
         arrayToSend.push({name: eventToDisplay[i].name, qrscanned: eventToDisplay[i].qrCodesScanned, ticketsSold: eventToDisplay[i].ticketsSold})
@@ -120,7 +117,6 @@ export const getAllEvents = async() =>{
 export const deleteEvent = async(eventToDelete) =>{
     try{    
         const eventChecker = await Event.find({_id: eventToDelete})
-        console.log(eventChecker)
         if(eventChecker.length < 1){
             throw new ErrorWithStatus("event not found", 400)
         }
@@ -133,7 +129,7 @@ export const deleteEvent = async(eventToDelete) =>{
 
         return {
             message: "Event Deleted",
-            todos: await getAllEvents(),
+            events: await getAllEvents(),
         }
     }
     catch(error){

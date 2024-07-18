@@ -26,7 +26,11 @@ const userSchema = mongoose.Schema({
     totalAmountOfTicketsBought:{
         type: Number,
         default: 0
-    }
+    }, 
+    purchaseIdCounter:{
+        type: Number,
+        default: 0
+    }, 
 }, {
     timestamps: true
 })
