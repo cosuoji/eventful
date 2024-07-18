@@ -1,3 +1,4 @@
+import Event from "../database/schema/eventSchema.js";
 import User from "../database/schema/userSchema.js";
 import ErrorWithStatus from "../exceptions/errorStatus.js"
 
@@ -19,6 +20,19 @@ export const acceptDetails = async(purchaseId)=>{
         }
 
     }  catch(error){
+        throw new ErrorWithStatus(error.message, 500)
+    }
+}
+
+export const updateQRScanned = async(eventId, totalTickets)=>{
+    try{
+        const eventToUpdate = await Event.findById(eventId);
+        eventToUpdate.qrCodesScanned = eventToUpdate.qrCodesScanned + parseInt(totalTickets)
+        await eventToUpdate.save()
+        return {
+            data: eventToUpdate
+        }
+    } catch(error){
         throw new ErrorWithStatus(error.message, 500)
     }
 }

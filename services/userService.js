@@ -75,7 +75,7 @@ export const purchaseTickets = async(ticketsToBuy, amount) =>{
         const userUpdate = await User.findById(userId);
 	    userUpdate.purchaseIdCounter++;
         const purchaseId = userId + userUpdate.purchaseIdCounter;
-        userUpdate.eventsBoughtTicketsFor.push({event: ticketsToBuy, amountOfTickets: amount, purchaseId: purchaseId, name: userUpdate.name, userId: userId})
+        userUpdate.eventsBoughtTicketsFor.push({event: ticketsToBuy, amountOfTickets: amount, purchaseId: purchaseId, name: userUpdate.name, userId: userId, eventName: eventToCheck.name})
         await userUpdate.save()
         //userschema, add amount of tickets to total
         const userToUpdate = await User.findById(userId);

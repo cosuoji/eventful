@@ -1,6 +1,6 @@
 <%- include('partials/defaultHeader') -%>
 
-<div class="w-full max-w-xs">
+<div class="w-full max-w-xs" id="purchaseSection">
     <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="purchaseid">
@@ -19,18 +19,62 @@
         </div>
     </form>
 </div>
+<div class="w-full max-w-xs" id="verifySection">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="eventname">
+                Event Name
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="eventname" type="text" disabled>
+        </div>
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+                Name
+            </label>
+            <input
+                class="shadow appearance-none border  w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                id="name" type="text" disabled></div>
+                        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for='amount'>
+                Amount Of Tickets
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="amount" type="text" disabled>
+        </div>
+        <div class="flex items-center justify-between">
+            <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="button" id="verifyButton">
+                Verify
+            </button>
+        </div>
+    </form>
+</div>
+<div id="verification">
 
+</div>
 <script>
     window.addEventListener("load", event=>{
         const purchaseid = document.getElementById("purchaseid")
+        const name = document.getElementById("name")
+        const amount = document.getElementById("amount")
+        const eventname = document.getElementById("eventname")
+        const verifyButton = document.getElementById("verifyButton")
         const submit = document.getElementById("submitid")
+        const purchaseSection = document.getElementById("purchaseSection")
+        const verifySection = document.getElementById("verifySection")
+        const verification = document.getElementById("verification")
         purchaseIdvalue = window.location.pathname.split("/")[2]
         purchaseid.value = purchaseIdvalue
+        let eventId, totalTickets
 
         submit.addEventListener("click", event=>{
           try{
 
-            fetch("/verify", {
+            fetch(`/verify/${purchaseIdvalue}`, {
                 method: "POST",
                 body: JSON.stringify({
                     purchaseId: purchaseIdvalue
@@ -41,14 +85,50 @@
             })
                 .then((response) => response.json())
                 .then((json) => {
-                    console.log(json)
+                    //console.log(json)
+                    eventname.value = json.data.eventName;
+                    name.value = json.data.name
+                    amount.value = json.data.amountOfTickets;
+                    eventId = json.data.event
+                    totalTickets = json.data.amountOfTickets;
                 });
           } catch(error){
              console.error('Promise rejected')
           } 
-
          })
-     })
+    verifyButton.addEventListener("click", event => {
+
+            try {
+                fetch(`/verify/`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        eventId: eventId,
+                        totalTickets: totalTickets
+                    }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                })
+                .then((response) => response.json())
+                .then((json) =>{
+                    verifySection.remove()
+                    purchaseSection.remove()
+
+                    verification.classList.add("bg-white", "p-6", "md:mx-auto");
+                    const p = document.createElement("p")
+                    p.innerHTML = "Ticket Verified"
+                    p.classList.add("text-center");
+                    verification.appendChild(p)
+
+                })
+            } catch (error) {
+                console.error(error.message)
+
+            }
+        })
+                        
+
+        })
     
 
 </script>
