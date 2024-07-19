@@ -18,8 +18,8 @@ export const acceptDetails = async(req, res)=>{
 
 export const updateQRScanned = async(req, res)=>{
     try{
-        const {eventId, totalTickets} = req.body
-        const result = await verifyService.updateQRScanned(eventId, totalTickets)
+        const {eventId, totalTickets, purchaseId} = req.body
+        const result = await verifyService.updateQRScanned(eventId, totalTickets, purchaseId)
         res.json(result)
     }catch(error){
         res.status(500).json({message: error.message})

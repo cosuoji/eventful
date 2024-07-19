@@ -7,6 +7,7 @@ import {sendEmail} from "../utils/sendEmail.js"
 import fs from 'fs'
 import { unlink } from 'node:fs';
 
+
 export const getAllEvents = async() =>{
   try{
     const timeframe = new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))
@@ -75,7 +76,7 @@ export const purchaseTickets = async(ticketsToBuy, amount) =>{
         const userUpdate = await User.findById(userId);
 	    userUpdate.purchaseIdCounter++;
         const purchaseId = userId + userUpdate.purchaseIdCounter;
-        userUpdate.eventsBoughtTicketsFor.push({event: ticketsToBuy, amountOfTickets: amount, purchaseId: purchaseId, name: userUpdate.name, userId: userId, eventName: eventToCheck.name})
+        userUpdate.eventsBoughtTicketsFor.push({event: ticketsToBuy, amountOfTickets: amount, purchaseId: purchaseId, name: userUpdate.name, userId: userId, eventName: eventToCheck.name, qrCodeScanned: "false"})
         await userUpdate.save()
         //userschema, add amount of tickets to total
         const userToUpdate = await User.findById(userId);

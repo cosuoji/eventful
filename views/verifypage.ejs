@@ -85,7 +85,7 @@
             })
                 .then((response) => response.json())
                 .then((json) => {
-                    //console.log(json)
+                    console.log(json)
                     eventname.value = json.data.eventName;
                     name.value = json.data.name
                     amount.value = json.data.amountOfTickets;
@@ -103,7 +103,8 @@
                     method: "POST",
                     body: JSON.stringify({
                         eventId: eventId,
-                        totalTickets: totalTickets
+                        totalTickets: totalTickets,
+                        purchaseId: purchaseIdvalue
                     }),
                     headers: {
                         "Content-type": "application/json; charset=UTF-8"
@@ -111,14 +112,27 @@
                 })
                 .then((response) => response.json())
                 .then((json) =>{
-                    verifySection.remove()
-                    purchaseSection.remove()
+                    if(json.message === "Ticket Already Verified"){
+                        verifySection.remove()
+                        purchaseSection.remove()
 
-                    verification.classList.add("bg-white", "p-6", "md:mx-auto");
-                    const p = document.createElement("p")
-                    p.innerHTML = "Ticket Verified"
-                    p.classList.add("text-center");
-                    verification.appendChild(p)
+                        verification.classList.add("bg-white", "p-6", "md:mx-auto");
+                        const p = document.createElement("p")
+                        p.innerHTML = "Ticket Already Verified"
+                        p.classList.add("text-center");
+                        verification.appendChild(p)
+
+                    } else{
+                        verifySection.remove()
+                        purchaseSection.remove()
+
+                        verification.classList.add("bg-white", "p-6", "md:mx-auto");
+                        const p = document.createElement("p")
+                        p.innerHTML = "Ticket Verified"
+                        p.classList.add("text-center");
+                        verification.appendChild(p)                        
+                    }
+
 
                 })
             } catch (error) {

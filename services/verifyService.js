@@ -24,15 +24,48 @@ export const acceptDetails = async(purchaseId)=>{
     }
 }
 
-export const updateQRScanned = async(eventId, totalTickets)=>{
+export const updateQRScanned = async(eventId, totalTickets, purchaseId)=>{
     try{
         const eventToUpdate = await Event.findById(eventId);
-        eventToUpdate.qrCodesScanned = eventToUpdate.qrCodesScanned + parseInt(totalTickets)
-        await eventToUpdate.save()
-        return {
-            data: eventToUpdate
+        const result = await acceptDetails(purchaseId)
+        let report, userInfo; 
+        if(result.data.qrCodeScanned === "true"){
+            return {
+                message: "Ticket Already Verified"
+            }
+        } else{
+          eventToUpdate.qrCodesScanned = eventToUpdate.qrCodesScanned + parseInt(totalTickets)
+          const userToUpdate = await User.findById(result.data.userId)
+          const userData = userToUpdate.eventsBoughtTicketsFor
+
+         for(let i = 0; i < userData.length; i++){
+            for(let key in userData[i]){
+                if(userData[i][key] === purchaseId){
+                    userInfo = userData[i]
+                    userData[i].qrCodeScanned = "true"
+                    userToUpdate.markModified("eventsBoughtTicketsFor")
+                    await userToUpdate.save()
+                    report = userData[i].qrCodeScanned
+                }
+            }
+            
         }
+                     
+          await userToUpdate.save()
+          await eventToUpdate.save()
+          return {
+            data: eventToUpdate,
+            info: userInfo,
+            report: report,
+            user: userToUpdate.eventsBoughtTicketsFor
+        }
+
+        }
+
+        
+
     } catch(error){
         throw new ErrorWithStatus(error.message, 500)
     }
 }
+
