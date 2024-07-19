@@ -69,6 +69,20 @@ export const purchaseTickets = async(ticketsToBuy, amount) =>{
             await Event.findOneAndUpdate({_id: ticketsToBuy}, {ticketsAvailable: newAmount})
         }
         //add to the users bought, user id and amount
+
+        if(eventToCheck.usersBought.length > 0){
+        for(let i = 0; i < eventToCheck.usersBought.length; i++){{
+            for(let key in eventToCheck.usersBought[i]){
+                if(eventToCheck.usersBought[i][key] === userId){
+                    eventToCheck.usersBought[i].ticketsBought = (parseInt(eventToCheck.usersBought[i].ticketsBought) + parseInt(amount)).toString()
+                    eventToCheck.markModified("usersBought")
+                    await eventToCheck.save()
+                }
+            }
+        }}
+        }
+
+
         eventToCheck.usersBought.push({user: userId, ticketsBought: amount})
         await eventToCheck.save();
 

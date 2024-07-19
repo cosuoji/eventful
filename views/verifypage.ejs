@@ -10,13 +10,13 @@
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="purchaseid" type="text" placeholder="Purchase ID" disabled>
         </div>
-        <div class="flex items-center justify-between">
+        <!-- <div class="flex items-center justify-between">
             <button id="submitid"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="button">
                 Confirm Purchase ID
             </button>
-        </div>
+        </div> -->
     </form>
 </div>
 <div class="w-full max-w-xs" id="verifySection">
@@ -70,8 +70,6 @@
         purchaseIdvalue = window.location.pathname.split("/")[2]
         purchaseid.value = purchaseIdvalue
         let eventId, totalTickets
-
-        submit.addEventListener("click", event=>{
           try{
 
             fetch(`/verify/${purchaseIdvalue}`, {
@@ -85,7 +83,9 @@
             })
                 .then((response) => response.json())
                 .then((json) => {
-                    console.log(json)
+                   
+
+                    
                     eventname.value = json.data.eventName;
                     name.value = json.data.name
                     amount.value = json.data.amountOfTickets;
@@ -94,8 +94,7 @@
                 });
           } catch(error){
              console.error('Promise rejected')
-          } 
-         })
+          }
     verifyButton.addEventListener("click", event => {
 
             try {

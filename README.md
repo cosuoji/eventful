@@ -13,7 +13,6 @@ POST MAN API
 - cron jobs for reminders
 - 1 week, 1 day, 1hr before, dropdown front end, cron jobs backend
 - user profile, shows the event's bought tickets for - shows tickets bought (set reminder feature)
--  check the users bought array, if it exists..update the total
 
 
 # Eventful
