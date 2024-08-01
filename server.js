@@ -10,6 +10,7 @@ import { rateLimiterUsingThirdParty } from "./utils/rateLimiter.js"
 import creatoRoute from "./routes/creatorRoutes.js"
 import useRoute from "./routes/userRoutes.js"
 import verifyRoute from "./routes/verfyRoute.js"
+import client from "./utils/redis.js"
 
 //import httpLogger from "./logger/httplogger.js"
 
@@ -28,7 +29,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static('public'))
 //app.use(httpLogger)
 
-
+client.connect()
 
 app.set('view engine', 'ejs');
 
@@ -51,6 +52,6 @@ mongoose.connect(MONGODB_URI)
     .then(()=>{
         console.log("Connected to DB")
         app.listen(PORT, _ =>{
-            console.log("application manager is running on PORT", PORT)
+            console.log("Eventful is running on PORT", PORT)
         })
     })

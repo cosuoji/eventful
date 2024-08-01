@@ -69,7 +69,17 @@ function generateTable(table, data) {
 
  generateTable(table, analyArr)   
 
-qrcode.innerHTML = analyArr.reduce((acc, curr) => acc.qrscanned + curr.qrscanned)
-ticketsales.innerHTML = analyArr.reduce((acc, curr) => acc.ticketsSold + curr.ticketsSold)
+// qrcode.innerHTML = analyArr.reduce((acc, curr) => acc.qrscanned + curr.qrscanned)
+// ticketsales.innerHTML = analyArr.reduce((acc, curr) => acc.ticketsSold + curr.ticketsSold)
+
+let qrsum = 0
+let ticketSalesSum = 0
+for(let i = 0; i < analyArr.length; i++){
+    qrsum += analyArr[i].qrscanned
+    ticketSalesSum += analyArr[i].ticketsSold
+}
+
+qrcode.innerHTML = qrsum
+ticketsales.innerHTML = ticketSalesSum
 </script>
 

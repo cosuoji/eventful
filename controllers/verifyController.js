@@ -1,5 +1,6 @@
 import * as verifyService from "../services/verifyService.js"
 
+
 export const verifyQrCode = async(req, res)=>{
     res.render("verifypage")
 

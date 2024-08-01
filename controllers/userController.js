@@ -1,4 +1,6 @@
 import * as userService from "../services/userService.js"
+import client from "../utils/redis.js"
+
 
 
 export const getAllEvents = async(req, res)=>{
@@ -31,3 +33,4 @@ export const purchaseTickets = async(req,res) =>{
         res.status(500).json({message: error.message})
     }
 }
+

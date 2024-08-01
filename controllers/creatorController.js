@@ -1,11 +1,13 @@
 import * as creatorService from "../services/creatorService.js"
+import client from "../utils/redis.js"
+
 
 export const addEvent = async(req, res)=>{
     try{
-        //console.log(req.body)
         const {name, address, ticketsAvailable, date}  = req.body;
         const result = await creatorService.addEvent(name, address, ticketsAvailable, date);
-        res.render("creator.ejs", {listOfEvents: result.events.eventList, arrayOfIds: result.events.eventIdArray, username: result.user})
+        //res.render("creator.ejs", {listOfEvents: result.events.eventList, arrayOfIds: result.events.eventIdArray, username: result.user})
+        res.redirect("/creator")
 
     }
     catch(error){
@@ -18,7 +20,6 @@ export const addEvent = async(req, res)=>{
 export const getAllEvents = async(req, res) =>{
     try{
         const result = await creatorService.getAllEvents()
-        //console.log(result)
         res.render("creator.ejs", {listOfEvents: result.eventList, arrayOfIds: result.eventIdArray, username: result.user})
     }
     catch(error){
@@ -26,20 +27,6 @@ export const getAllEvents = async(req, res) =>{
     }
 }
 
-
-
-
-// export const updateEvent = async(req, res)=>{
-//     try {
-//         const eventId = req.body.todoId;
-//         const {name, address, ticketsAvailable} = req.body
-//         const result = await toDoService.updateToDo(eventId, name, address, ticketsAvailable)
-//         res.json(result)
-//     }
-//     catch(error){
-//         res.status(500).json({message: error.message})
-//     }
-// }
 
 
 

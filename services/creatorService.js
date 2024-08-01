@@ -25,9 +25,7 @@ export const addEvent = async(name, address, ticketsAvailable, date)=>{
 export const displayAnalytics = async() =>{
  const timeframe = new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))
     try{
-     const eventToDisplay = await Event.find({creator: creatorUserId, date: {
-        $gte: timeframe
-    }})
+     const eventToDisplay = await Event.find({creator: creatorUserId})
 
      let arrayToSend = []
 

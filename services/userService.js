@@ -82,8 +82,9 @@ export const purchaseTickets = async(ticketsToBuy, amount) =>{
         }}
         }
 
-
+    
         eventToCheck.usersBought.push({user: userId, ticketsBought: amount})
+        eventToCheck.ticketsSold = eventToCheck.ticketsSold + parseInt(amount)
         await eventToCheck.save();
 
         //userschema, add event to array and total amount of tickets bought
@@ -136,3 +137,5 @@ export const purchaseTickets = async(ticketsToBuy, amount) =>{
         throw new ErrorWithStatus(error.message, 500)
     }
 }
+
+

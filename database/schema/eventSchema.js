@@ -9,6 +9,7 @@ const eventSchema = mongoose.Schema({
     address:{
         type:String,
         required: true,
+        trim: true,
     },
   creator:{
      type:String,

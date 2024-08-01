@@ -3,16 +3,15 @@
 
 
 # Best Practices:
-Don't always hit the DB, use a cache layer.
 Ensure you write unit and integration tests where possible
-POST MAN API
-
+- Add analytics to user 
+- creator profile not adding up  
 
 
 # IDEAS 
 - cron jobs for reminders
 - 1 week, 1 day, 1hr before, dropdown front end, cron jobs backend
-- user profile, shows the event's bought tickets for - shows tickets bought (set reminder feature)
+
 
 
 # Eventful
@@ -32,3 +31,4 @@ Requirements and Implementation Guide
 - Implement rate limiting
 - It would be better if you could spec and document the API with OpenAPI using something like https://stoplight.io/
 
+https://sneez.stoplight.io/docs/altschool-capstone-project/os6dx4cyz82uo-verify-purchase-id
