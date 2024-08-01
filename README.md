@@ -5,7 +5,6 @@
 # Best Practices:
 Ensure you write unit and integration tests where possible
 - Add analytics to user 
-- creator profile not adding up  
 
 
 # IDEAS 
