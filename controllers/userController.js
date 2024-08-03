@@ -34,3 +34,12 @@ export const purchaseTickets = async(req,res) =>{
     }
 }
 
+export const displayAnalytics = async(req, res)=>{
+    try{
+        const result = await userService.displayAnalytics()
+        res.render("userProfile", {ticketData: JSON.stringify(result.ticketInfo), tabledata: JSON.stringify(result.eventArray)})
+    } catch(error){
+        res.status(500).json({message: error.message})
+    }
+}
+

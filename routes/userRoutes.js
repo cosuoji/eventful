@@ -9,5 +9,7 @@ const useRoute = Router();
 useRoute.get("/", userMiddleware, userController.getAllEvents)
 useRoute.post("/", userMiddleware, userController.purchaseTickets)
 useRoute.get("/events/:id", userMiddleware, userController.oneEvent)
+useRoute.get("/profile", userMiddleware, userController.displayAnalytics)
+
 
 export default useRoute

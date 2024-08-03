@@ -6,6 +6,7 @@ import QR from "qrcode";
 import {sendEmail} from "../utils/sendEmail.js"
 import fs from 'fs'
 import { unlink } from 'node:fs';
+import moment from "moment"
 
 
 export const getAllEvents = async() =>{
@@ -91,7 +92,7 @@ export const purchaseTickets = async(ticketsToBuy, amount) =>{
         const userUpdate = await User.findById(userId);
 	    userUpdate.purchaseIdCounter++;
         const purchaseId = userId + userUpdate.purchaseIdCounter;
-        userUpdate.eventsBoughtTicketsFor.push({event: ticketsToBuy, amountOfTickets: amount, purchaseId: purchaseId, name: userUpdate.name, userId: userId, eventName: eventToCheck.name, qrCodeScanned: "false"})
+        userUpdate.eventsBoughtTicketsFor.push({event: ticketsToBuy, amountOfTickets: amount, purchaseId: purchaseId, name: userUpdate.name, userId: userId, eventName: eventToCheck.name, qrCodeScanned: "false", date: eventToCheck.date})
         await userUpdate.save()
         //userschema, add amount of tickets to total
         const userToUpdate = await User.findById(userId);
@@ -139,3 +140,25 @@ export const purchaseTickets = async(ticketsToBuy, amount) =>{
 }
 
 
+
+export const displayAnalytics = async() =>{
+ //const timeframe = new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))
+
+    try{
+     const userToDisplay = await User.findById(userId)
+     let display = userToDisplay.eventsBoughtTicketsFor
+     let arrayToSend = []
+     for(let i = 0; i < display.length; i++){
+        arrayToSend.push({eventName: display[i].eventName, amountOfTickets: display[i].amountOfTickets, date: moment(display[i].date).format('MMMM Do YYYY, h:mm:ss a')})
+     }
+ 
+     return {
+        eventArray: arrayToSend,
+        ticketInfo: userToDisplay.totalAmountOfTicketsBought
+    }
+
+
+    } catch(error){
+        throw new ErrorWithStatus(error.message, 500)
+    }
+}
