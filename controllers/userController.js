@@ -1,5 +1,5 @@
 import * as userService from "../services/userService.js"
-import client from "../utils/redis.js"
+//import client from "../utils/redis.js"
 
 
 
@@ -43,3 +43,14 @@ export const displayAnalytics = async(req, res)=>{
     }
 }
 
+export const reminderScheduler = async(req, res) =>{
+
+    try {
+    const {datetime, event, eventId} = req.body
+    const result = await userService.reminderScheduler(datetime, event, eventId);
+    res.status(200).json({success: "Reminder Created Successfully", data: result})
+    } catch (error) {
+        res.status(500).json({ message: error.message})
+    }
+
+}

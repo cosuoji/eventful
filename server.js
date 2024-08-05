@@ -26,7 +26,6 @@ app.use(express.json())
 app.use(morgan('dev'))
 app.use(rateLimiterUsingThirdParty)
 app.use(bodyParser.urlencoded({extended: false}))
-app.use(express.static('public'))
 //app.use(httpLogger)
 
 client.connect()

@@ -7,11 +7,8 @@ Ensure you write unit and integration tests where possible
 
 
 
-# IDEAS 
-- cron jobs for reminders
-- 1 week, 1 day, 1hr before, dropdown front end, cron jobs backend
-- Fixed the services to return pages 
-
+# IDEAS s
+- if the date is in the past, don't display it 
 
 
 # Eventful

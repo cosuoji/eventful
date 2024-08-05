@@ -9,7 +9,7 @@
 
 
 <div class="relative overflow-x-auto">
-    TICKET PURCHASES
+    LIVE EVENT TICKET PURCHASES
     <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
    
     </table>
@@ -30,17 +30,20 @@
         let analyArr = []
         window.app = <%- tabledata %>
             analyArr = [...window.app]
-            console.log(analyArr)
+        
+        
 
-            for(let i = 0; i < analyArr.length;i++){
-                console.log(analyArr[i].date)
-            }
-
+        
+        for(let i = 0; i < analyArr.length; i++){
+            analyArr[i].duration = "Pick Reminder Time"
+            analyArr[i].Reminders = "Set Reminder"
+            console.log(analyArr[i])
+        }
 
 
         function generateTableHead(table, data) {
             let thead = table.createTHead()
-            thead.classList.add("text-xs", "text-gray-700", "uppercase", "bg-gray-50", "dark:bg-gray-700", "dark:text-gray-400")
+            thead.classList.add("text-xs", "text-gray-700", "bg-gray-50", "dark:bg-gray-700", "dark:text-gray-400")
             let row = thead.insertRow()
             row.classList.add("bg-white", "dark:bg-gray-800")
 
@@ -48,6 +51,7 @@
                 if (key === "eventName") key = "Event Name"
                 if (key === 'amountOfTickets') key = "Tickets"
                 if (key === "date") key = "Date Of Event"
+                if (key === "duration") key = "Reminder Duration"
                 let th = document.createElement("th");
                 th.classList.add("px-6", "py-4", "font-medium", "text-gray-900", "whitespace-nowrap", "dark:text-white")
                 let text = document.createTextNode(key);
@@ -55,6 +59,7 @@
                 row.appendChild(th)
             }
         }
+       
         let data = Object.keys(analyArr[0]);
         generateTableHead(table, data);
 
@@ -65,8 +70,35 @@
                 for (key in element) {
                     let cell = row.insertCell();
                     cell.classList.add("px-6", "py-4")
-                    let text = document.createTextNode(element[key]);
-                    cell.appendChild(text);
+                    if(key === "Reminders"){
+                       let button = document.createElement("button")
+                       let text = document.createTextNode(element[key]);
+                       button.classList.add("reminder")
+                       button.classList.add("bg-blue-500", "hover:bg-blue-700", "text-white", "font-bold", "py-2","px-4","rounded")
+                       button.appendChild(text)
+                       cell.appendChild(button)
+
+                    }else if(key === "duration"){
+                        var array = ["1 hour", "1 day", "1 week"]
+                        let select = document.createElement("select");
+                        select.id = "select"
+                        let text = document.createTextNode(element[key]);
+                        select.appendChild(text)
+                        cell.appendChild(select)
+
+                        for (var i = 0; i < array.length; i++) {
+                            var option = document.createElement("option");
+                            option.value = array[i];
+                            option.text = array[i];
+                            select.appendChild(option);
+                        }
+
+                    }
+                     else{
+                        let text = document.createTextNode(element[key]);
+                        cell.appendChild(text);
+                    }
+
                 }
             }
         }
