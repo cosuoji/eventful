@@ -155,7 +155,7 @@ export const displayAnalytics = async() =>{
      let display = userToDisplay.eventsBoughtTicketsFor
      let arrayToSend = []
      for(let i = 0; i < display.length; i++){
-        arrayToSend.push({eventName: display[i].eventName, amountOfTickets: display[i].amountOfTickets, date: moment(display[i].date).format('MMMM Do YYYY, h:mm:ss a')})
+        arrayToSend.push({eventName: display[i].eventName, amountOfTickets: display[i].amountOfTickets, date: moment(display[i].date).format('MMMM Do YYYY, h:mm:ss a'), dateSent: moment(display[i].date).format('x')})
         //console.log(display[i].date.valueOf())
      }
  

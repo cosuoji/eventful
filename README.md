@@ -8,7 +8,6 @@ Ensure you write unit and integration tests where possible
 
 
 # IDEAS s
-- if the date is in the past, don't display it 
 
 
 # Eventful

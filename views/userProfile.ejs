@@ -9,7 +9,7 @@
 
 
 <div class="relative overflow-x-auto">
-    LIVE EVENT TICKET PURCHASES
+    EVENT TICKET PURCHASES
     <table id="table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
    
     </table>
@@ -27,17 +27,27 @@
 
 
         let table = document.getElementById("table")
+         let selectcounter = 0;
+         let  buttoncounter = 0;
+        let elementsarray = []
+        let selectarray = []
         let analyArr = []
+
         window.app = <%- tabledata %>
             analyArr = [...window.app]
         
-        
+        console.log(analyArr)
 
         
         for(let i = 0; i < analyArr.length; i++){
             analyArr[i].duration = "Pick Reminder Time"
             analyArr[i].Reminders = "Set Reminder"
-            console.log(analyArr[i])
+            let date = new Date()
+            let fire = moment().format("x")
+            if(fire > analyArr[i].dateSent) {
+                delete analyArr[i].duration
+                delete analyArr[i].Reminders
+            }
         }
 
 
@@ -52,6 +62,7 @@
                 if (key === 'amountOfTickets') key = "Tickets"
                 if (key === "date") key = "Date Of Event"
                 if (key === "duration") key = "Reminder Duration"
+                if(key === "dateSent") continue
                 let th = document.createElement("th");
                 th.classList.add("px-6", "py-4", "font-medium", "text-gray-900", "whitespace-nowrap", "dark:text-white")
                 let text = document.createTextNode(key);
@@ -68,23 +79,41 @@
                 let row = table.insertRow();
                 row.classList.add("bg-white", "dark:bg-gray-800")
                 for (key in element) {
+                    if(key === "dateSent") continue
                     let cell = row.insertCell();
                     cell.classList.add("px-6", "py-4")
+
                     if(key === "Reminders"){
+                        buttoncounter++;
                        let button = document.createElement("button")
+                       button.id = `buttonId${buttoncounter}`
                        let text = document.createTextNode(element[key]);
-                       button.classList.add("reminder")
+
+                  
+                       elementsarray.push(`buttonId${buttoncounter}`)
+
                        button.classList.add("bg-blue-500", "hover:bg-blue-700", "text-white", "font-bold", "py-2","px-4","rounded")
                        button.appendChild(text)
                        cell.appendChild(button)
 
+                        
+                     
+
+                        
+                        //console.log(select)
+
                     }else if(key === "duration"){
+            
+                        selectcounter++;
                         var array = ["1 hour", "1 day", "1 week"]
                         let select = document.createElement("select");
-                        select.id = "select"
+                        select.id = `durationId${selectcounter}`
+                        selectarray.push(`durationId${selectcounter}`)
                         let text = document.createTextNode(element[key]);
                         select.appendChild(text)
                         cell.appendChild(select)
+
+                  
 
                         for (var i = 0; i < array.length; i++) {
                             var option = document.createElement("option");
@@ -101,10 +130,21 @@
 
                 }
             }
+
+
+            elementsarray.forEach((element, index) =>{
+                let current = document.getElementById(element)
+                let select = document.getElementById(selectarray[index])
+                
+                current.addEventListener("click", e=>{
+                    console.log(select.value)
+                })
+            })
+
+
         }
 
         generateTable(table, analyArr)
-
-        // qrcode.innerHTML = analyArr.reduce((acc, curr) => acc.qrscanned + curr.qrscanned)
-        // ticketsales.innerHTML = analyArr.reduce((acc, curr) => acc.ticketsSold + curr.ticketsSold)
+ 
+        
     </script>
