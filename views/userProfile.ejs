@@ -135,12 +135,34 @@
             elementsarray.forEach((element, index) =>{
                 let current = document.getElementById(element)
                 let select = document.getElementById(selectarray[index])
-                
+                let eventTitle = analyArr[index].eventName
+                let eventDate = analyArr[index].dateSent
                 current.addEventListener("click", e=>{
-                    console.log(select.value)
-                })
-            })
+                    console.log(select.value, eventTitle, eventDate)
 
+                 try {
+                    fetch(`/user/create-reminder`, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            datetime: select.value,
+                            eventName: eventTitle,
+                            eventTime: eventDate
+                        }),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
+                    })
+                        .then((response) => response.json())
+                        .then((json) => {
+                            console.log(json)
+                            window.location.href = "/user/profile"
+                        });
+                } catch (error) {
+                    console.error('Promise rejected')
+                }
+                
+            })
+        })
 
         }
 

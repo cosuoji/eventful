@@ -46,8 +46,8 @@ export const displayAnalytics = async(req, res)=>{
 export const reminderScheduler = async(req, res) =>{
 
     try {
-    const {datetime, event, eventId} = req.body
-    const result = await userService.reminderScheduler(datetime, event, eventId);
+    const {datetime, eventName, eventTime} = req.body
+    const result = await userService.reminderScheduler(datetime, eventName, eventTime);
     res.status(200).json({success: "Reminder Created Successfully", data: result})
     } catch (error) {
         res.status(500).json({ message: error.message})

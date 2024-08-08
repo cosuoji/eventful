@@ -7,11 +7,7 @@ import {sendEmail, sendEmailWithoutAttachment} from "../utils/sendEmail.js"
 import fs from 'fs'
 import { unlink } from 'node:fs';
 import moment from "moment"
-import Queue from "bull"
-import Worker from "bull"
-import { redisOptions } from "../utils/redis.js"
-
-export const remindersQueue = new Queue("reminders", {redis: redisOptions})
+import { emailQueue } from "../utils/queueInstance.js";
 
 
 
@@ -155,7 +151,7 @@ export const displayAnalytics = async() =>{
      let display = userToDisplay.eventsBoughtTicketsFor
      let arrayToSend = []
      for(let i = 0; i < display.length; i++){
-        arrayToSend.push({eventName: display[i].eventName, amountOfTickets: display[i].amountOfTickets, date: moment(display[i].date).format('MMMM Do YYYY, h:mm:ss a'), dateSent: moment(display[i].date).format('x')})
+        arrayToSend.push({eventName: display[i].eventName, amountOfTickets: display[i].amountOfTickets, date: moment(display[i].date).format('MMMM Do YYYY, h:mm:ss a'), dateSent: moment(display[i].date).format("x")})
         //console.log(display[i].date.valueOf())
      }
  
@@ -170,37 +166,47 @@ export const displayAnalytics = async() =>{
     }
 }
 
-export const reminderScheduler = async(datetime, event, eventId) => {
+export const reminderScheduler = async(datetime, eventName, eventTime) => {
     try {
-    const userEmail = User.findById(userId).email
-    const eventToRemindFor = Event.findById(eventId)
+    
+    const user = await User.findById(userId)
+    const userEmail = user.email
+    eventTime = parseInt(eventTime)
     let duration; 
     const message =  "Reminder for Event"
 
     if(datetime === "1 hour") {
-        duration = 3600000
+        duration = eventTime - 3600000
     }
     if(datetime === "1 day") {
-        duration = 86400000
+        duration = eventTime - 86400000
     }
     if(datetime == "1 week") {
-        duration = 604800000
+        duration = eventTime -  604800000
     }
+    
+    
 
-    const job = await remindersQueue.add({userEmail, message}, {delay:eventToRemindFor.date.valueOf() - duration })
+    const job = await emailQueue.add({userEmail, message, eventName}, {delay: duration})
 
-    new Worker("reminders", async(job)=>{
-        const {userEmail, message} = job.data 
-        await sendEmailWithoutAttachment(userEmail, `Reminder for ${eventToRemindFor.name}` , `Reminder: ${message}`);
-    })
+    
+
+    console.log(job.data)
+
+    // emailQueue.process(async(job)=>{
+    //     console.log('Processing job:', job.data.message);
+    //     const {userEmail, message} = job.data 
+    //     await sendEmailWithoutAttachment(userEmail, `Reminder for ${eventName}` , `Reminder: ${message}`);
+    //     return Promise.resolve();
+    // })
 
 
-   
     return { 
             success: true, 
             message: 'Reminder created successfully', 
-            jobId: job.id
-
+            jobId: job.id, 
+            dateEmailWillBeSent: moment(duration).format("DD MMM YYYY hh:mm a"),
+            eventDate: moment(eventTime).format("DD MMM YYYY hh:mm a")
          }
 
 
