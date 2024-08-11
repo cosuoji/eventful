@@ -11,6 +11,7 @@ import creatoRoute from "./routes/creatorRoutes.js"
 import useRoute from "./routes/userRoutes.js"
 import verifyRoute from "./routes/verfyRoute.js"
 import client from "./utils/redis.js"
+import { connect } from "./database/schema/connection.js"
 
 //import httpLogger from "./logger/httplogger.js"
 
@@ -46,11 +47,16 @@ app.all("*", (req, res )=>{
     })
 })
 
+
 //connect to DB
-mongoose.connect(MONGODB_URI)
-    .then(()=>{
+connect(MONGODB_URI)
+.then(()=>{
         console.log("Connected to DB")
         app.listen(PORT, _ =>{
             console.log("Eventful is running on PORT", PORT)
         })
     })
+
+
+
+export default app     

@@ -115,7 +115,7 @@ export const purchaseTickets = async(ticketsToBuy, amount) =>{
 
         // let stringdata = JSON.stringify(data);
 
-        const qrCodeString = await QR.toDataURL(`http://localhost:3000/verify/${purchaseId}`)
+        const qrCodeString = await QR.toDataURL(`https://eventful-ue8u.onrender.com/verify/${purchaseId}`)
         
         let qrCodeImage = qrCodeString.split(';base64,').pop();
 

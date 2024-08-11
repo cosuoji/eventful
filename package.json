@@ -2,10 +2,12 @@
   "name": "eventful",
   "version": "1.0.0",
   "description": "Ticketing Platform",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js",
+    "test": "jest",
+    "worker": "node ./utils/queueInstance.js"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +32,7 @@
     "nodemon": "^3.1.4",
     "qrcode": "^1.5.3",
     "redis": "^4.6.15",
+    "supertest": "^7.0.0",
     "winston": "^3.13.0"
   }
 }
